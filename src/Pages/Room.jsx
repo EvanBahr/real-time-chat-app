@@ -1,16 +1,43 @@
 import { useState, useEffect } from "react";
-import {
+import client, {
   COLLECTION_ID_MESSAGES,
   DATABASE_ID,
   databases,
 } from "../appwriteConfig";
 import { ID, Query } from "appwrite";
+import { Trash2 } from "react-feather";
 const Room = () => {
   const [Messages, setMessages] = useState([]);
   const [messageBody, setMessageBody] = useState("");
-  console.log("new message", messageBody);
+  // console.log("new message", messageBody);
   useEffect(() => {
     getMessages();
+    const unsubscribe = client.subscribe(
+      `databases.${DATABASE_ID}.collections.${COLLECTION_ID_MESSAGES}.documents`,
+      (response) => {
+        if (
+          response.events.includes(
+            "databases.*.collections.*.documents.*.create"
+          )
+        ) {
+          console.log("MESSAGE was created", response);
+          setMessages((prevState) => [response.payload, ...prevState]);
+        }
+        if (
+          response.events.includes(
+            "databases.*.collections.*.documents.*.delete"
+          )
+        ) {
+          setMessages((prevState) =>
+            prevState.filter((message) => message.$id !== response.payload.$id)
+          );
+          console.log("MESSAGE was deleted", response);
+        }
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
   }, []);
   const getMessages = async () => {
     const response = await databases.listDocuments(
@@ -18,7 +45,7 @@ const Room = () => {
       COLLECTION_ID_MESSAGES,
       [Query.orderDesc("$createdAt"), Query.limit(5)]
     );
-    console.log("response", response.documents);
+    // console.log("response", response.documents);
     setMessages(response.documents);
   };
   const handleSubmit = async (e) => {
@@ -34,15 +61,15 @@ const Room = () => {
     );
     setMessageBody("");
     console.log("created", response);
-    getMessages((prevState) => [response, ...Messages]);
+    // setMessages((prevState) => [response, ...Messages]);
     console.log("updated", Messages);
   };
 
   const DeleteMessage = async (message_id) => {
     databases.deleteDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, message_id);
-    setMessages((prevState) =>
-      Messages.filter((message) => message.$id !== message_id)
-    );
+    // setMessages((prevState) =>
+    //   prevState.filter((message) => message.$id !== response.payload.$id)
+    // );
     // getMessages();
   };
   return (
@@ -67,15 +94,15 @@ const Room = () => {
             <div key={message.$id} className="message--wrapper">
               <div className="message--header">
                 <small className="message-timestamp">
-                  {message.$createdAt}
+                  {new Date(message.$createdAt).toLocaleString()}
+                  {/* {message.$createdAt} */}
                 </small>
-                <button
+                <Trash2
                   onClick={() => {
                     DeleteMessage(message.$id);
                   }}
-                >
-                  X
-                </button>
+                  className="delete--btn"
+                />
               </div>
               <div className="message--body">
                 <span>{message.body} </span>
