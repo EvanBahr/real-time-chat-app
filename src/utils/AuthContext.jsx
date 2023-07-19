@@ -19,26 +19,34 @@ export const AuthProvider = ({ children }) => {
         Credentials.password
       );
       console.log("logged", response);
-      const accountDetail = account.get();
+      const accountDetail = await account.get();
       setUser(accountDetail);
       navigate("/");
     } catch (error) {
       console.log("ERROR", error);
     }
   };
-  const ContextData = {
-    user,
-    handleUserLogin,
+
+  const handleUserLogOut = async () => {
+    await account.deleteSession("current");
+    setUser(null);
   };
 
   const getUserOnLoad = async () => {
     try {
-      const accountDetail = account.get();
+      const accountDetail = await account.get();
+      console.log("accoun detail", accountDetail);
+
       setUser(accountDetail);
     } catch (error) {
       console.error(error);
     }
     setLoading(false);
+  };
+  const ContextData = {
+    user,
+    handleUserLogin,
+    handleUserLogOut,
   };
   return (
     <AuthContext.Provider value={ContextData}>
