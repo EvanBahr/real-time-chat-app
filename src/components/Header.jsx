@@ -6,7 +6,7 @@ function Header() {
     <div id="header--wrapper">
       {user ? (
         <>
-          WELCOME BACK {user.name}
+          welcome {user.name} ^_^
           <LogOut className="header--link" onClick={handleUserLogOut} />
         </>
       ) : (

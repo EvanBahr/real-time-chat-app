@@ -91,6 +91,7 @@ const Room = () => {
             <input className="btn btn--secondary" type="submit" value="Send" />
           </div>
         </form>
+
         <div>
           {Messages.map((message) => (
             <div key={message.$id} className="message--wrapper">
