@@ -1,7 +1,7 @@
 // import React from 'react'
 import { useEffect, useState } from "react";
 import { useAuth } from "../utils/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const [Credentials, setCredentials] = useState({
     email: "",
@@ -54,6 +54,9 @@ const LoginPage = () => {
             />
           </div>
         </form>
+        <p>
+          dont have an account register <Link to={"/register"}>here</Link>{" "}
+        </p>
       </div>
     </div>
   );
