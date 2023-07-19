@@ -7,6 +7,6 @@ export const DOCUMENT_ID = ID.unique();
 client
   .setEndpoint("https://cloud.appwrite.io/v1")
   .setProject("64b0efd0586cb02d6f7a");
-export const account = new Account(client);
 export const databases = new Databases(client);
+export const account = new Account(client);
 export default client;

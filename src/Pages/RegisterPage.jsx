@@ -1,18 +1,13 @@
-// import React from 'react'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../utils/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
-const LoginPage = () => {
+
+function RegisterPage() {
+  const { handleUserRegister } = useAuth();
   const [Credentials, setCredentials] = useState({
+    name: "",
     email: "",
-    password: "",
-  });
-  const navigate = useNavigate();
-  const { user, handleUserLogin } = useAuth();
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
+    password1: "",
+    password2: "",
   });
   const handleInputChange = (e) => {
     let name = e.target.name;
@@ -23,7 +18,18 @@ const LoginPage = () => {
   return (
     <div className="auth--container">
       <div className="form--wrapper">
-        <form onSubmit={(e) => handleUserLogin(e, Credentials)}>
+        <form onSubmit={(e) => handleUserRegister(e, Credentials)}>
+          <div className="field--wrapper">
+            <label>Name</label>
+            <input
+              type="text"
+              required
+              name="name"
+              placeholder="Enter Your Name..."
+              value={Credentials.name}
+              onChange={handleInputChange}
+            />
+          </div>
           <div className="field--wrapper">
             <label>Email:</label>
             <input
@@ -40,9 +46,20 @@ const LoginPage = () => {
             <input
               type="password"
               required
-              name="password"
+              name="password1"
               placeholder="Enter Your Password..."
-              value={Credentials.password}
+              value={Credentials.password1}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="field--wrapper">
+            <label>Confirm Password:</label>
+            <input
+              type="password"
+              required
+              name="password2"
+              placeholder="Confirm Your Password..."
+              value={Credentials.password2}
               onChange={handleInputChange}
             />
           </div>
@@ -50,16 +67,13 @@ const LoginPage = () => {
             <input
               className="btn btn--lg btn--main"
               type="submit"
-              value="Login"
+              value="Register"
             />
           </div>
         </form>
-        <p>
-          dont have an account register <Link to={"/register"}>here</Link>{" "}
-        </p>
       </div>
     </div>
   );
-};
+}
 
-export default LoginPage;
+export default RegisterPage;
