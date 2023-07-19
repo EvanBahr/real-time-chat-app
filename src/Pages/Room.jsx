@@ -6,7 +6,10 @@ import client, {
 } from "../appwriteConfig";
 import { ID, Query } from "appwrite";
 import { Trash2 } from "react-feather";
+import { useAuth } from "../utils/AuthContext";
 const Room = () => {
+  // const { user } = useAuth();
+  // console.log("user", user);
   const [Messages, setMessages] = useState([]);
   const [messageBody, setMessageBody] = useState("");
   // console.log("new message", messageBody);
