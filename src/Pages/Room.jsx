@@ -101,15 +101,18 @@ const Room = () => {
 
         <div>
           {Messages.map((message) => (
-            <div key={message.$id} className="message--wrapper">
-              <div className="message--header">
+            <div
+              key={message.$id}
+              className="flex flex-wrap flex-col gap-2 m-4"
+            >
+              <div className="flex justify-between items-center">
                 <p>
                   {message?.username ? (
                     <span>{message.username}</span>
                   ) : (
                     <span>Anounymous User</span>
                   )}
-                  <small className="message-timestamp">
+                  <small className="ml-4 text-gray-500">
                     {new Date(message.$createdAt).toLocaleString()}
                     {/* {message.$createdAt} */}
                   </small>
@@ -121,12 +124,22 @@ const Room = () => {
                     onClick={() => {
                       DeleteMessage(message.$id);
                     }}
-                    className="delete--btn"
+                    className="text-blue-300 cursor-pointer transition-all duration-300 w-16 hover:text-red-500"
                   />
                 )}
               </div>
-              <div className="message--body">
-                <span>{message.body} </span>
+              <div>
+                {message.$permissions.includes(
+                  `delete(\"user:${user.$id}\")`
+                ) ? (
+                  <div className="py-2 px-4 border text-right border-blue-400 text-slate-200 rounded-lg break-words">
+                    <span>{message.body} </span>
+                  </div>
+                ) : (
+                  <div className="py-2 px-4 border border-white text-slate-200 rounded-lg break-words">
+                    <span>{message.body} </span>
+                  </div>
+                )}
               </div>
             </div>
           ))}

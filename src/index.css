@@ -1,5 +1,7 @@
 /* Global settings */
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 :root {
   --mainBgColor: rgba(20, 20, 31, 11);
   --secondaryBgColor: rgba(27, 27, 39, 1);
@@ -32,7 +34,7 @@ body {
   max-width: 600px;
   margin: 20px auto;
 }
-
+// max-w-600 mx-auto mt-20
 /* Login & Register Pages */
 
 .auth--container {
@@ -41,6 +43,9 @@ body {
   align-items: center;
   justify-content: center;
 }
+//
+
+//
 
 .form--wrapper {
   width: 600px;
