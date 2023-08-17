@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider value={ContextData}>
-      {Loading ? <p>Loading...</p> : children}
+      {Loading ? <p>Loading....</p> : children}
     </AuthContext.Provider>
   );
 };
